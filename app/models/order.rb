@@ -8,6 +8,9 @@ class Order < ApplicationRecord
 
   before_validation :set_total, on: :create
 
+  # Fire the post-payment chain on the real DB commit (Rails-native, production-safe)
+  after_update_commit :enqueue_post_payment, if: :just_became_paid?
+
   # Order lifecycle. AASM wraps each transition (and its callbacks) in a DB
   # transaction, so if decrementing stock fails the whole "pay" rolls back.
   aasm do
@@ -37,5 +40,15 @@ class Order < ApplicationRecord
 
   def decrement_stock
     product.sell!(quantity)
+  end
+
+  def just_became_paid?
+    saved_change_to_aasm_state? && paid?
+  end
+
+  # Kick off the background chain once payment is committed (not inside the
+  # transaction, so the job always sees the persisted paid order).
+  def enqueue_post_payment
+    NotifyStoreJob.perform_later(self)
   end
 end

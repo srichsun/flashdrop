@@ -1,0 +1,5 @@
+Order #<%= @order.id %> has been paid.
+
+Product:  <%= @order.product.name %>
+Quantity: <%= @order.quantity %>
+Total:    <%= number_to_currency(@order.total_cents / 100.0) %>

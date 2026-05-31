@@ -47,6 +47,8 @@ gem "devise"          # Authentication: sign up, log in, password, session
 gem "pundit"          # Authorization: owner / staff permissions
 gem "acts_as_tenant"  # Row-level multi-tenancy, auto-scopes by tenant_id
 gem "aasm"            # Order state machine (pending -> paid -> shipped)
+gem "sidekiq"         # Background jobs (used in production)
+gem "redis"           # Backing store for Sidekiq
 
 group :development, :test do
   # Testing

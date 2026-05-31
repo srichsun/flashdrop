@@ -39,6 +39,12 @@ RSpec.describe Order, type: :model do
       order.pay!
       expect(order.may_pay?).to be(false)
     end
+
+    # :no_transaction so the after_commit callback actually fires
+    it "kicks off the post-payment job chain once committed", :no_transaction do
+      order = create(:order, product: create(:product, stock: 5))
+      expect { order.pay! }.to have_enqueued_job(NotifyStoreJob).with(order)
+    end
   end
 
   describe "#ship!" do
