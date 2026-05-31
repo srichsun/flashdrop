@@ -1,0 +1,28 @@
+# DigitalOcean App Platform spec.
+# Deploy with: doctl apps create --spec .do/app.yaml
+# Set RAILS_MASTER_KEY in the DO dashboard (value = contents of config/master.key).
+name: merchant-os
+region: sgp # Singapore — closest region to Taiwan
+
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    http_port: 80 # matches EXPOSE 80 in the Dockerfile (Thruster)
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    github:
+      repo: srichsun/merchant_os
+      branch: main
+      deploy_on_push: true
+    envs:
+      - key: RAILS_MASTER_KEY
+        scope: RUN_TIME
+        type: SECRET # value set in the dashboard, not committed
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        value: ${db.DATABASE_URL} # injected from the database below
+
+databases:
+  - name: db
+    engine: PG
+    version: "16"
