@@ -50,6 +50,11 @@ gem "aasm"            # Order state machine (pending -> paid -> shipped)
 gem "sidekiq"         # Background jobs (used in production)
 gem "redis"           # Backing store for Sidekiq
 
+# Observability
+gem "sentry-ruby"     # Error tracking
+gem "sentry-rails"    # Sentry's Rails integration
+gem "lograge"         # Condense request logs into single-line JSON
+
 group :development, :test do
   # Testing
   gem "rspec-rails"

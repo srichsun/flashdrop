@@ -19,6 +19,14 @@ class ApplicationController < ActionController::Base
 
   private
 
+  # Add who/which-store to each request's log line (picked up by Lograge)
+  def append_info_to_payload(payload)
+    super
+    payload[:request_id] = request.request_id
+    payload[:user_id] = current_user&.id
+    payload[:tenant_id] = ActsAsTenant.current_tenant&.id
+  end
+
   def set_current_tenant
     ActsAsTenant.current_tenant = current_user&.tenant
   end

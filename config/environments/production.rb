@@ -40,6 +40,17 @@ Rails.application.configure do
   # Change to "debug" to log everything (including potentially personally-identifiable information!).
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
+  # Condense each request into one JSON line (easier to read and search).
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Json.new
+  config.lograge.custom_options = lambda do |event|
+    {
+      request_id: event.payload[:request_id],
+      tenant_id: event.payload[:tenant_id],
+      user_id: event.payload[:user_id]
+    }
+  end
+
   # Prevent health checks from clogging up the logs.
   config.silence_healthcheck_path = "/up"
 
