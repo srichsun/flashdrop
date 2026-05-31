@@ -2,10 +2,10 @@
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  # PostgreSQL 15+ revokes CREATE on the public schema from non-owners, which
-  # breaks db:prepare on some hosted databases. Grant it back if we're allowed;
-  # ignore the error if we already have it or aren't permitted.
-  ./bin/rails runner "ActiveRecord::Base.connection.execute('GRANT ALL ON SCHEMA public TO CURRENT_USER')" 2>/dev/null || true
+  # Hosted Postgres (PG15+) blocks creating tables in the shared "public" schema.
+  # Create our own schema (owned by the app user) so db:prepare can build there.
+  # Matches schema_search_path "app,public" in config/database.yml.
+  ./bin/rails runner "ActiveRecord::Base.connection.execute('CREATE SCHEMA IF NOT EXISTS app')"
   ./bin/rails db:prepare
 fi
 

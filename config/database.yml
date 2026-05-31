@@ -90,6 +90,9 @@ production:
   primary: &primary_production
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
+    # Put our tables in a schema the app user owns. Hosted Postgres (PG15+) blocks
+    # creating tables in the shared "public" schema, but the user can make its own.
+    schema_search_path: "app,public"
   cache:
     <<: *primary_production
     migrations_paths: db/cache_migrate
