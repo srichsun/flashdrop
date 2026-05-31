@@ -60,8 +60,9 @@ Rails.application.configure do
   # Replace the default in-process memory cache store with a durable alternative.
   config.cache_store = :solid_cache_store
 
-  # Run background jobs through Sidekiq (backed by Redis)
-  config.active_job.queue_adapter = :sidekiq
+  # Run jobs in-process on the free tier (no Redis/worker needed).
+  # Switch to :sidekiq once a Redis instance and a worker process are available.
+  config.active_job.queue_adapter = :async
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
