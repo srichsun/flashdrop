@@ -54,3 +54,12 @@ body { background: var(--bg); color: var(--white); font-family: "Inter", system-
   font-family: "Martian Mono", monospace; font-size: 11px; letter-spacing: .28em;
   text-transform: uppercase; color: var(--gold);
 }
+
+/* pagy pagination nav */
+.pagy { display: flex; gap: 6px; font-size: 13px; flex-wrap: wrap; }
+.pagy a, .pagy span {
+  padding: 6px 11px; border: 1px solid var(--border); color: var(--soft); text-decoration: none;
+}
+.pagy a:hover { border-color: var(--gold-dim); color: var(--gold); }
+.pagy a.current, .pagy .current { color: var(--gold); border-color: var(--gold-dim); }
+.pagy a[aria-disabled="true"], .pagy .gap { color: var(--muted); border-color: transparent; }

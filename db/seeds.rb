@@ -37,9 +37,14 @@ demo = seed_store(
   owner_email: "owner@example.com",
   staff_email: "staff@example.com",
   products: [
-    { name: "Cold Brew Coffee", price_cents: 12_000, stock: 50 },
-    { name: "Ceramic Mug",      price_cents: 38_000, stock: 20 },
-    { name: "Tote Bag",         price_cents: 25_000, stock: 0 } # sold out
+    { name: "Cold Brew Coffee",   price_cents: 12_000, stock: 50 },
+    { name: "Ceramic Mug",        price_cents: 38_000, stock: 20 },
+    { name: "Pour-over Dripper",  price_cents: 45_000, stock: 15 },
+    { name: "Paper Filters ×100", price_cents: 18_000, stock: 80 },
+    { name: "Stainless Tumbler",  price_cents: 52_000, stock: 12 },
+    { name: "Coffee Beans 250g",  price_cents: 36_000, stock: 40 },
+    { name: "Gift Box Set",       price_cents: 88_000, stock: 8 },
+    { name: "Tote Bag",           price_cents: 25_000, stock: 0 } # sold out
   ]
 )
 
@@ -48,18 +53,27 @@ seed_store(
   owner_email: "owner2@example.com",
   products: [
     { name: "Espresso Beans 1kg", price_cents: 60_000, stock: 30 },
-    { name: "Pour-over Kettle",   price_cents: 95_000, stock: 8 }
+    { name: "Pour-over Kettle",   price_cents: 95_000, stock: 8 },
+    { name: "Milk Frother",       price_cents: 42_000, stock: 18 }
   ]
 )
 
-# A few orders in different states for the Demo Store
+# A spread of orders for the Demo Store so the dashboard and the paginated
+# orders page have something to show.
 if demo.orders.none?
-  mug = demo.products.find_by!(name: "Ceramic Mug")
-  coffee = demo.products.find_by!(name: "Cold Brew Coffee")
+  products = demo.products.to_a
+  emails = %w[alice bob carol dave erin frank grace heidi ivan judy].map { |n| "#{n}@example.com" }
 
-  Order.create!(tenant: demo, product: coffee, quantity: 1) # pending
-  Order.create!(tenant: demo, product: mug, quantity: 2, aasm_state: "paid")
-  Order.create!(tenant: demo, product: coffee, quantity: 3, aasm_state: "shipped")
+  28.times do
+    Order.create!(
+      tenant: demo,
+      product: products.sample,
+      quantity: rand(1..3),
+      customer_email: emails.sample,
+      aasm_state: %w[paid paid paid shipped shipped pending].sample,
+      created_at: rand(0..21).days.ago
+    )
+  end
 end
 
 puts "Seeded #{Tenant.count} stores, #{User.count} users, " \

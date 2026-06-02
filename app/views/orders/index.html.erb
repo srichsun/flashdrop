@@ -1,0 +1,41 @@
+<div class="panel p-8">
+  <h1 class="display text-3xl font-bold mb-6">Orders</h1>
+
+  <% if @orders.any? %>
+    <table class="w-full text-sm">
+      <thead class="border-b border-[#1e1e1e] text-left muted">
+        <tr>
+          <th class="py-3 font-medium">#</th>
+          <th class="py-3 font-medium">Product</th>
+          <th class="py-3 font-medium">Qty</th>
+          <th class="py-3 font-medium">Total</th>
+          <th class="py-3 font-medium">Customer</th>
+          <th class="py-3 font-medium">Status</th>
+          <th class="py-3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr class="border-b border-[#161616] last:border-0">
+            <td class="py-3">#<%= order.id %></td>
+            <td class="py-3 font-medium"><%= order.product.name %></td>
+            <td class="py-3"><%= order.quantity %></td>
+            <td class="py-3 gold"><%= number_to_currency(order.total_cents / 100.0) %></td>
+            <td class="py-3 muted"><%= order.customer_email %></td>
+            <td class="py-3"><span class="mono text-xs uppercase soft"><%= order.aasm_state %></span></td>
+            <td class="py-3 text-right">
+              <% if order.may_ship? && policy(order).ship? %>
+                <%= button_to "Mark shipped", ship_order_path(order), method: :patch,
+                      class: "link-soft", form: { class: "inline" } %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="mt-6"><%== pagy_nav(@pagy) %></div>
+  <% else %>
+    <p class="muted py-12 text-center">No orders yet.</p>
+  <% end %>
+</div>

@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   resources :products
 
+  resources :orders, only: [ :index ] do
+    member { patch :ship }
+  end
+
   # Public storefront (no login; tenant comes from the URL slug)
   scope path: "s", module: "storefront", as: "storefront" do
     get ":store_slug", to: "stores#show", as: :store

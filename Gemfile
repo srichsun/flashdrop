@@ -98,3 +98,6 @@ group :test do
   # Truncate the DB for threaded specs (transactions can't be shared across connections)
   gem "database_cleaner-active_record"
 end
+
+# Pagination
+gem "pagy", "~> 9.0"
