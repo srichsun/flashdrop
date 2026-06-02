@@ -50,5 +50,7 @@ class Order < ApplicationRecord
   # transaction, so the job always sees the persisted paid order).
   def enqueue_post_payment
     NotifyStoreJob.perform_later(self)
+    # Push the new sale onto the store's dashboard in real time (ActionCable)
+    broadcast_prepend_to(tenant, target: "orders", partial: "orders/order", locals: { order: self })
   end
 end

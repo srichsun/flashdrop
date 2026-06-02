@@ -18,3 +18,12 @@
     <%= link_to "View storefront", storefront_store_path(@tenant), class: "btn btn-ghost" %>
   </div>
 </div>
+
+<%= turbo_stream_from @tenant %>
+<div class="panel mt-6 p-8">
+  <h2 class="display text-xl font-bold">Recent sales</h2>
+  <div id="orders" class="mt-4">
+    <% @orders.each do |order| %><%= render "orders/order", order: order %><% end %>
+  </div>
+  <p class="muted mt-3 text-xs">New paid orders appear here in real time.</p>
+</div>

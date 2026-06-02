@@ -1,0 +1,13 @@
+<div id="<%= dom_id(order) %>" class="flex items-center justify-between border-b border-[#161616] py-3 text-sm last:border-0">
+  <div>
+    <span class="font-medium"><%= order.product.name %></span>
+    <span class="muted">× <%= order.quantity %></span>
+    <% if order.customer_email.present? %>
+      <span class="muted">· <%= order.customer_email %></span>
+    <% end %>
+  </div>
+  <div class="flex items-center gap-4">
+    <span class="gold"><%= number_to_currency(order.total_cents / 100.0) %></span>
+    <span class="mono text-xs uppercase soft"><%= order.aasm_state %></span>
+  </div>
+</div>

@@ -15,4 +15,15 @@ RSpec.describe "Dashboard", type: :request do
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Acme")
   end
+
+  it "lists recent paid orders" do
+    user = create(:user)
+    product = create(:product, tenant: user.tenant, name: "Live Mug", stock: 5)
+    create(:order, tenant: user.tenant, product: product, aasm_state: "paid")
+    sign_in user
+
+    get root_path
+
+    expect(response.body).to include("Live Mug")
+  end
 end

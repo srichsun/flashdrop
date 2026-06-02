@@ -45,6 +45,12 @@ RSpec.describe Order, type: :model do
       order = create(:order, product: create(:product, stock: 5))
       expect { order.pay! }.to have_enqueued_job(NotifyStoreJob).with(order)
     end
+
+    it "broadcasts the sale to the store dashboard once paid", :no_transaction do
+      order = create(:order, product: create(:product, stock: 5))
+      expect(Turbo::StreamsChannel).to receive(:broadcast_prepend_to).at_least(:once)
+      order.pay!
+    end
   end
 
   describe "#ship!" do
