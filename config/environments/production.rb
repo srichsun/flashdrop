@@ -52,6 +52,9 @@ Rails.application.configure do
   # Condense each request into one JSON line (easier to read and search).
   config.lograge.enabled = true
   config.lograge.formatter = Lograge::Formatters::Json.new
+  # Don't log the health check ping (Render hits /up constantly). Lograge
+  # replaces the default logger, so silence_healthcheck_path doesn't cover it.
+  config.lograge.ignore_actions = [ "Rails::HealthController#show" ]
   config.lograge.custom_options = lambda do |event|
     {
       request_id: event.payload[:request_id],
