@@ -148,6 +148,22 @@
     .pillar p { font-size: 14px; color: var(--soft); font-weight: 300; line-height: 1.85; }
     @media (max-width: 860px) { .pillars { grid-template-columns: 1fr; } }
 
+    /* CHECKOUT FLOW */
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); }
+    .flow .step { background: var(--surface); padding: 28px 24px; border-right: 1px solid var(--border); }
+    .flow .step:last-child { border-right: none; }
+    .flow .step .n {
+      font-family: 'Martian Mono', monospace; font-size: 11px; letter-spacing: .2em;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .flow .step h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+    .flow .step p { font-size: 13px; color: var(--soft); font-weight: 300; line-height: 1.8; }
+    @media (max-width: 720px) {
+      .flow { grid-template-columns: 1fr; }
+      .flow .step { border-right: none; border-bottom: 1px solid var(--border); }
+      .flow .step:last-child { border-bottom: none; }
+    }
+
     footer { padding: 50px 0 70px; color: var(--muted); font-size: 13px; font-family: 'Martian Mono', monospace; letter-spacing: .08em; }
     footer a { color: var(--soft); text-decoration: none; }
     footer a:hover { color: var(--gold); }
@@ -182,7 +198,19 @@
         <div class="card"><div class="ptag">State machine</div><h3>訂單狀態機</h3><p>AASM 管理 pending → paid → shipped,付款失敗整筆 rollback、不重複付款。</p></div>
         <div class="card"><div class="ptag">Background jobs</div><h3>背景任務鏈</h3><p>付款成功後觸發:通知店家 → 寄買家確認信 → 出貨準備的 job 鏈。</p></div>
         <div class="card"><div class="ptag">Search</div><h3>商品搜尋</h3><p>pg_search 以 Postgres trigram 搜尋,支援部分比對與中文,不另外架 Elasticsearch。</p></div>
-        <div class="card"><div class="ptag">Storefront</div><h3>公開店面 + 結帳</h3><p>免登入店面,瀏覽/搜尋/下單;結帳填 email 收確認信(金流目前 mock,可接綠界)。</p></div>
+        <div class="card"><div class="ptag">Storefront</div><h3>公開店面 + 結帳</h3><p>免登入店面,瀏覽/搜尋/下單;結帳串接綠界(ECPay)金流,付款後寄出確認信。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <span class="section-label">Checkout</span>
+      <h2>結帳金流流程</h2>
+      <p class="intro">串接綠界(ECPay):導頁付款 + webhook 驗章,跟業界 hosted 金流同一套。</p>
+      <div class="flow">
+        <div class="step"><div class="n">01</div><h3>建立訂單</h3><p>結帳時先建一筆 pending 訂單與交易編號。</p></div>
+        <div class="step"><div class="n">02</div><h3>導去綠界</h3><p>帶簽章參數導到綠界付款頁,買家在綠界完成付款。</p></div>
+        <div class="step"><div class="n">03</div><h3>驗章 webhook</h3><p>綠界 server 回呼,後端重算 CheckMacValue 比對,確認沒被竄改。</p></div>
+        <div class="step"><div class="n">04</div><h3>標記付款</h3><p>驗章通過才轉為 paid 並觸發通知;重複回呼不重複處理。</p></div>
       </div>
     </section>
 
