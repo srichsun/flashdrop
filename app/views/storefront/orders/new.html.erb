@@ -5,7 +5,7 @@
     <span class="muted">(<%= @product.stock %> in stock)</span>
   </p>
 
-  <%= form_with url: storefront_store_orders_path(@store), method: :post do %>
+  <%= form_with url: storefront_store_orders_path(@store), method: :post, data: { turbo: false } do %>
     <%= hidden_field_tag :product_id, @product.id %>
 
     <div class="mb-4">

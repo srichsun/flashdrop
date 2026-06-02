@@ -2,7 +2,7 @@
   <h1 class="display text-2xl font-bold">Redirecting to ECPay…</h1>
   <p class="mt-2 soft">You're being taken to ECPay's secure payment page.</p>
 
-  <%= form_tag @action_url, method: :post, id: "ecpay-form" do %>
+  <%= form_tag @action_url, method: :post, id: "ecpay-form", data: { turbo: false } do %>
     <% @fields.each do |name, value| %>
       <%= hidden_field_tag name, value %>
     <% end %>
