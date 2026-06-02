@@ -25,6 +25,18 @@ RSpec.describe "Storefront", type: :request do
       expect(response.body).not_to include(theirs.name)
     end
 
+    it "shows the product photo when one is attached" do
+      product = create(:product, tenant: store, name: "Photo Mug", stock: 5)
+      product.image.attach(
+        io: File.open(Rails.root.join("spec/fixtures/files/sample_product.jpg")),
+        filename: "sample_product.jpg", content_type: "image/jpeg"
+      )
+
+      get storefront_store_path(store)
+
+      expect(response.body).to match(%r{<img[^>]+rails/active_storage})
+    end
+
     it "filters by the search query" do
       create(:product, tenant: store, name: "Ceramic Mug", stock: 5)
       create(:product, tenant: store, name: "Wooden Spoon", stock: 5)

@@ -11,8 +11,12 @@
   <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
     <% @products.each do |product| %>
       <div class="panel flex flex-col transition hover:-translate-y-1">
-        <div class="flex h-40 items-center justify-center bg-[#0c0c0c]">
-          <span class="display text-5xl font-bold muted"><%= product.name.first %></span>
+        <div class="flex h-40 items-center justify-center overflow-hidden bg-[#0c0c0c]">
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(:card), class: "h-full w-full object-cover", loading: "lazy", alt: product.name %>
+          <% else %>
+            <span class="display text-5xl font-bold muted"><%= product.name.first %></span>
+          <% end %>
         </div>
         <div class="flex flex-1 flex-col p-5">
           <h2 class="font-medium"><%= product.name %></h2>

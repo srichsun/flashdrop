@@ -5,6 +5,19 @@
 #   owner@example.com  / staff@example.com   -> Demo Store
 #   owner2@example.com                        -> Coffee Lab
 
+SEED_IMAGES = Dir[Rails.root.join("db/seeds/images/*.jpg")].sort unless defined?(SEED_IMAGES)
+
+# Attach a demo photo (round-robin through the bundled images). Wrapped in a
+# rescue so a missing/misconfigured object store never breaks the boot-time seed.
+def attach_demo_image(product, index)
+  return if product.image.attached? || SEED_IMAGES.empty?
+
+  path = SEED_IMAGES[index % SEED_IMAGES.size]
+  product.image.attach(io: File.open(path), filename: File.basename(path), content_type: "image/jpeg")
+rescue => e
+  warn "Skipped image for #{product.name}: #{e.message}"
+end
+
 def seed_store(name:, owner_email:, staff_email: nil, products:)
   store = Tenant.find_or_create_by!(name: name)
 
@@ -22,11 +35,12 @@ def seed_store(name:, owner_email:, staff_email: nil, products:)
     end
   end
 
-  products.each do |attrs|
-    store.products.find_or_create_by!(name: attrs[:name]) do |p|
+  products.each_with_index do |attrs, i|
+    product = store.products.find_or_create_by!(name: attrs[:name]) do |p|
       p.price_cents = attrs[:price_cents]
       p.stock = attrs[:stock]
     end
+    attach_demo_image(product, i)
   end
 
   store
