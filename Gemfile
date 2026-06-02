@@ -101,3 +101,7 @@ end
 
 # Pagination
 gem "pagy", "~> 9.0"
+
+# REST API auth + rate limiting
+gem "jwt"
+gem "rack-attack"

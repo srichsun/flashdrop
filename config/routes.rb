@@ -21,6 +21,14 @@ Rails.application.routes.draw do
   # ECPay server-to-server payment notification (verified, no CSRF/login)
   post "payments/ecpay/callback", to: "payments/ecpay#callback", as: :payments_ecpay_callback
 
+  # JSON API (JWT auth)
+  namespace :api do
+    namespace :v1 do
+      post "login", to: "sessions#create"
+      resources :products, only: %i[index show]
+    end
+  end
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
