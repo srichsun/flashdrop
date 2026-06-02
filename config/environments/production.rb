@@ -79,7 +79,10 @@ Rails.application.configure do
   # Email via SMTP. Set the SMTP_* env vars (SendGrid / Resend / Brevo ...) to
   # turn delivery on; until then deliveries are skipped (no crash).
   config.action_mailer.perform_deliveries = ENV["SMTP_ADDRESS"].present?
-  config.action_mailer.raise_delivery_errors = false
+  # Surface delivery errors (caught + logged by NotifyStoreJob as "[MAIL] failed")
+  # instead of failing silently. Mail runs in background jobs, so this never
+  # affects a web request.
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = {
     host: ENV.fetch("APP_HOST", "merchant-os.onrender.com"), protocol: "https"
