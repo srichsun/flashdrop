@@ -7,299 +7,272 @@
   <title>MerchantOS — 多租戶電商 SaaS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500&family=Spline+Sans+Mono:wght@400;500&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #080808; --surface: #111111; --surface-2: #161616;
-      --border: #1e1e1e; --border-strong: #2a2620;
-      --gold: #c9a84c; --gold-dim: #8a6f30; --gold-soft: rgba(201,168,76,.08);
-      --white: #f0ece4; --soft: #a09890; --muted: #6b6560;
+      --paper:   #F2EEE5;
+      --paper-2: #EAE5D8;
+      --ink:     #1B1A15;
+      --soft:    #5B564B;
+      --faint:   #938C7C;
+      --line:    #D7D0C0;
+      --line-2:  #C7BFAC;
+      --accent:  #9C4A2C;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
     body {
-      font-family: 'Noto Serif TC', Georgia, serif;
-      background: var(--bg); color: var(--white);
-      line-height: 1.85; font-size: 16px; -webkit-font-smoothing: antialiased;
+      background: var(--paper); color: var(--ink);
+      font-family: "Inter", "Noto Serif TC", system-ui, sans-serif;
+      font-size: 16px; line-height: 1.6;
     }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 28px; }
-    ::selection { background: var(--gold); color: var(--bg); }
+    ::selection { background: var(--ink); color: var(--paper); }
     a { color: inherit; }
 
-    .kicker {
-      font-family: 'Martian Mono', monospace; font-size: 11px;
-      letter-spacing: .34em; color: var(--gold); text-transform: uppercase;
-      display: inline-flex; align-items: center; gap: 12px;
+    .frame { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+    .serif { font-family: "Fraunces", "Noto Serif TC", Georgia, serif; }
+    .mono {
+      font-family: "Spline Sans Mono", ui-monospace, monospace;
+      font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
     }
-    .kicker::before { content: ""; width: 26px; height: 1px; background: var(--gold); }
 
-    /* HERO */
-    .hero { padding: 110px 0 80px; border-bottom: 1px solid var(--border); position: relative; }
-    .hero::after {
-      content: ""; position: absolute; left: 0; bottom: -1px; width: 180px; height: 1px;
-      background: linear-gradient(to right, var(--gold), transparent);
+    /* top bar */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 30px 0 22px; border-bottom: 1px solid var(--line);
     }
+    .wordmark { font-family: "Fraunces", serif; font-weight: 600; font-size: 21px; letter-spacing: -.01em; }
+    .wordmark b { color: var(--accent); font-weight: 600; }
+
+    /* hero */
+    .hero { padding: 110px 0 96px; border-bottom: 1px solid var(--line); }
+    .eyebrow {
+      font-family: "Spline Sans Mono", monospace; font-size: 12px; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--accent); display: inline-flex; align-items: center; gap: 14px;
+    }
+    .eyebrow::before { content: ""; width: 30px; height: 1px; background: var(--accent); display: inline-block; }
     .hero h1 {
-      font-size: clamp(56px, 10vw, 108px); font-weight: 600; letter-spacing: .01em;
-      line-height: 1.05; margin: 24px 0 26px;
+      font-family: "Fraunces", "Noto Serif TC", serif; font-weight: 500;
+      font-size: clamp(46px, 8.2vw, 104px); line-height: 1.0; letter-spacing: -.025em;
+      margin: 30px 0 32px;
     }
-    .hero h1 .gold {
-      color: var(--gold); font-style: italic; font-weight: 700;
-      font-family: 'Playfair Display', 'Noto Serif TC', serif;
-    }
+    .hero h1 em { font-style: italic; color: var(--accent); font-weight: 500; }
     .hero .lead {
-      font-size: 18px; color: var(--soft); max-width: 640px;
-      font-weight: 300; line-height: 1.95;
+      font-size: clamp(17px, 2vw, 21px); line-height: 1.7; color: var(--soft);
+      max-width: 660px; font-weight: 400;
     }
-    .cta { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; }
-    .btn {
-      font-family: 'Martian Mono', monospace; font-size: 12px; letter-spacing: .14em;
-      text-transform: uppercase; padding: 14px 22px; text-decoration: none;
-      border: 1px solid var(--gold-dim); color: var(--gold);
-      transition: background .2s ease, border-color .2s ease;
+    .actions { margin-top: 42px; display: flex; flex-wrap: wrap; gap: 30px; align-items: center; }
+    .cta {
+      font-family: "Spline Sans Mono", monospace; font-size: 13px; letter-spacing: .04em;
+      text-decoration: none; color: var(--ink); padding-bottom: 4px;
+      border-bottom: 1px solid var(--ink); transition: color .25s ease, border-color .25s ease, gap .25s ease;
     }
-    .btn:hover { background: var(--gold-soft); border-color: var(--gold); }
-    .btn.primary { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 500; }
-    .btn.primary:hover { background: #d9b95e; }
-    .creds {
-      margin-top: 28px; font-family: 'Martian Mono', monospace; font-size: 12px;
-      letter-spacing: .04em; color: var(--muted);
+    .cta:hover { color: var(--accent); border-color: var(--accent); }
+    .cta.ghost { color: var(--soft); border-color: var(--line-2); }
+    .cta.ghost:hover { color: var(--accent); border-color: var(--accent); }
+    .cred {
+      margin-top: 34px; font-family: "Spline Sans Mono", monospace; font-size: 12.5px;
+      letter-spacing: .02em; color: var(--faint);
     }
-    .creds b { color: var(--soft); font-weight: 500; }
+    .cred b { color: var(--soft); font-weight: 500; }
 
-    .tldr {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      margin-top: 56px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    /* stats */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--line); }
+    .stat { padding: 46px 0 44px; border-right: 1px solid var(--line); }
+    .stat:last-child { border-right: none; }
+    .stat .fig {
+      font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(48px, 6vw, 72px);
+      line-height: 1; letter-spacing: -.03em; display: block;
     }
-    .tldr .pill { padding: 30px 24px; border-right: 1px solid var(--border); }
-    .tldr .pill:last-child { border-right: none; }
-    .tldr .num {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700;
-      font-size: 40px; color: var(--gold); margin-bottom: 8px;
-    }
-    .tldr .desc { font-size: 14px; color: var(--soft); font-weight: 300; }
+    .stat .cap { display: block; margin-top: 14px; font-size: 14px; color: var(--soft); }
+    @media (max-width: 720px) { .stats { grid-template-columns: 1fr; } .stat { border-right: none; border-bottom: 1px solid var(--line); padding: 30px 0; } .stat:last-child { border-bottom: none; } }
 
-    /* SECTION */
-    section { padding: 88px 0; border-bottom: 1px solid var(--border); }
-    .section-label {
-      font-family: 'Martian Mono', monospace; font-size: 11px; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
-      display: inline-flex; align-items: center; gap: 12px;
+    /* section block */
+    .block { padding: 96px 0; border-bottom: 1px solid var(--line); }
+    .block-head { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 56px; max-width: 720px; }
+    .block-head h2 {
+      font-family: "Fraunces", "Noto Serif TC", serif; font-weight: 500;
+      font-size: clamp(28px, 4vw, 44px); line-height: 1.12; letter-spacing: -.02em;
     }
-    .section-label::before { content: ""; width: 24px; height: 1px; background: var(--gold); }
-    h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 600; line-height: 1.4; margin-bottom: 16px; }
-    .intro { color: var(--soft); max-width: 640px; margin-bottom: 48px; font-weight: 300; }
+    .block-head p { color: var(--soft); font-size: 17px; max-width: 620px; }
 
-    /* FEATURE CARDS */
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .card {
-      background: var(--surface); border: 1px solid var(--border); padding: 30px 26px;
-      position: relative; transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    /* numbered editorial index */
+    .index { list-style: none; border-top: 1px solid var(--line); }
+    .index .row {
+      display: grid; grid-template-columns: 64px 1fr; gap: 28px;
+      padding: 30px 0; border-bottom: 1px solid var(--line);
+      transition: padding-left .35s cubic-bezier(.16,1,.3,1);
     }
-    .card::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
-      opacity: 0; transition: opacity .3s ease;
-    }
-    .card:hover { transform: translateY(-3px); border-color: var(--gold-dim); background: var(--surface-2); }
-    .card:hover::before { opacity: 1; }
-    .card .ptag {
-      font-family: 'Martian Mono', monospace; font-size: 10px; letter-spacing: .25em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-    }
-    .card h3 { font-size: 19px; font-weight: 600; margin-bottom: 10px; line-height: 1.5; }
-    .card p { font-size: 14px; color: var(--soft); font-weight: 300; line-height: 1.85; }
-    @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+    .index .row:hover { padding-left: 12px; }
+    .index .idx { font-family: "Spline Sans Mono", monospace; font-size: 13px; color: var(--accent); padding-top: 6px; letter-spacing: .08em; }
+    .index .row h3 { font-family: "Fraunces", "Noto Serif TC", serif; font-weight: 500; font-size: 22px; letter-spacing: -.01em; margin-bottom: 8px; }
+    .index .row p { color: var(--soft); font-size: 15.5px; line-height: 1.7; max-width: 640px; }
+    @media (max-width: 600px) { .index .row { grid-template-columns: 1fr; gap: 10px; } }
 
-    /* DECISIONS MAP */
-    .map { border: 1px solid var(--border); }
-    .map .row {
-      display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px;
-      background: var(--surface); padding: 26px 30px; border-bottom: 1px solid var(--border);
-      transition: background .2s ease;
-    }
-    .map .row:last-child { border-bottom: none; }
-    .map .row:hover { background: var(--surface-2); }
-    .map .pick { border-right: 1px solid var(--border-strong); padding-right: 24px; }
-    .map .tag {
-      display: inline-block; font-family: 'Martian Mono', monospace; font-size: 10px;
-      letter-spacing: .2em; color: var(--gold); border: 1px solid var(--gold-dim);
-      padding: 4px 10px; margin-bottom: 12px; text-transform: uppercase;
-    }
-    .map .pick .name { font-weight: 600; color: var(--white); font-size: 15px; }
-    .map .why { color: var(--soft); font-size: 15px; font-weight: 300; line-height: 1.85; }
-    @media (max-width: 720px) {
-      .map .row { grid-template-columns: 1fr; gap: 14px; padding: 24px; }
-      .map .pick { border-right: none; border-bottom: 1px solid var(--border-strong); padding: 0 0 14px; }
-    }
+    /* checkout flow */
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+    .flow .step { padding: 32px 28px 32px 0; border-right: 1px solid var(--line); }
+    .flow .step:last-child { border-right: none; padding-right: 0; }
+    .flow .n { font-family: "Spline Sans Mono", monospace; font-size: 12px; letter-spacing: .14em; color: var(--accent); }
+    .flow .step h3 { font-family: "Fraunces", serif; font-weight: 500; font-size: 19px; margin: 14px 0 8px; }
+    .flow .step p { color: var(--soft); font-size: 14px; line-height: 1.65; }
+    @media (max-width: 780px) { .flow { grid-template-columns: 1fr 1fr; } .flow .step { border-right: none; border-bottom: 1px solid var(--line); padding: 26px 0; } }
 
-    /* STACK CHIPS */
-    .chips { display: flex; flex-wrap: wrap; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .chip { background: var(--surface); padding: 16px 22px; font-size: 14px; font-weight: 500; flex: 1 1 auto; text-align: center; }
-
-    /* PILLARS */
-    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .pillar { background: var(--surface); border: 1px solid var(--border); padding: 32px 28px; }
-    .pillar .rn {
-      width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
-      border: 1px solid var(--gold-dim); color: var(--gold); margin-bottom: 20px;
-      font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px;
+    /* decisions ledger */
+    .ledger { border-top: 1px solid var(--line); }
+    .led-row {
+      display: grid; grid-template-columns: 0.9fr 1.1fr 1.6fr; gap: 32px;
+      padding: 26px 0; border-bottom: 1px solid var(--line); align-items: start;
+      transition: background .25s ease;
     }
-    .pillar h3 { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-    .pillar p { font-size: 14px; color: var(--soft); font-weight: 300; line-height: 1.85; }
-    @media (max-width: 860px) { .pillars { grid-template-columns: 1fr; } }
+    .led-row:hover { background: var(--paper-2); }
+    .led-area { font-family: "Spline Sans Mono", monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); padding-top: 5px; }
+    .led-choice { font-family: "Fraunces", "Noto Serif TC", serif; font-weight: 500; font-size: 18px; letter-spacing: -.01em; }
+    .led-why { color: var(--soft); font-size: 15px; line-height: 1.7; }
+    @media (max-width: 760px) { .led-row { grid-template-columns: 1fr; gap: 8px; } .led-row:hover { background: transparent; } }
 
-    /* CHECKOUT FLOW */
-    .flow { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); }
-    .flow .step { background: var(--surface); padding: 28px 24px; border-right: 1px solid var(--border); }
-    .flow .step:last-child { border-right: none; }
-    .flow .step .n {
-      font-family: 'Martian Mono', monospace; font-size: 11px; letter-spacing: .2em;
-      color: var(--gold); margin-bottom: 14px;
+    /* stack specimen */
+    .stack {
+      font-family: "Spline Sans Mono", monospace; font-size: 15px; line-height: 2.1;
+      letter-spacing: .02em; color: var(--ink); text-transform: none; max-width: 880px;
     }
-    .flow .step h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
-    .flow .step p { font-size: 13px; color: var(--soft); font-weight: 300; line-height: 1.8; }
-    @media (max-width: 720px) {
-      .flow { grid-template-columns: 1fr; }
-      .flow .step { border-right: none; border-bottom: 1px solid var(--border); }
-      .flow .step:last-child { border-bottom: none; }
-    }
+    .stack span { color: var(--faint); padding: 0 6px; }
 
-    footer { padding: 50px 0 70px; color: var(--muted); font-size: 13px; font-family: 'Martian Mono', monospace; letter-spacing: .08em; }
-    footer a { color: var(--soft); text-decoration: none; transition: color .2s ease; }
-    footer a:hover { color: var(--gold); }
+    /* engineering */
+    .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; border-top: 1px solid var(--line); padding-top: 48px; }
+    .pillars .rn { font-family: "Fraunces", serif; font-style: italic; font-size: 30px; color: var(--accent); }
+    .pillars h3 { font-family: "Fraunces", "Noto Serif TC", serif; font-weight: 500; font-size: 19px; margin: 12px 0 10px; }
+    .pillars p { color: var(--soft); font-size: 14.5px; line-height: 1.7; }
+    @media (max-width: 760px) { .pillars { grid-template-columns: 1fr; gap: 36px; } }
 
-    /* Hover polish on blocks that didn't have it */
-    .pillar { transition: transform .3s cubic-bezier(.16, 1, .3, 1), border-color .3s ease; }
-    .pillar:hover { transform: translateY(-3px); border-color: var(--gold-dim); }
-    .chip { transition: background .25s ease, color .25s ease; }
-    .chip:hover { background: var(--surface-2); color: var(--gold); }
-    .btn { transition: background .2s ease, border-color .2s ease, transform .2s ease; }
-    .btn:hover { transform: translateY(-2px); }
+    /* footer */
+    .foot { padding: 56px 0 80px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .foot a { font-family: "Spline Sans Mono", monospace; font-size: 12.5px; letter-spacing: .04em; text-decoration: none; color: var(--soft); }
+    .foot a:hover { color: var(--accent); }
+    .foot .mark { font-family: "Fraunces", serif; font-weight: 600; }
 
-    /* Scroll-reveal — native IntersectionObserver, no libraries. The reveal is
-       applied to whole blocks ([data-reveal]) so it can never out-specify and
-       hide inner content. Only active when JS is on (.js) and motion allowed. */
+    /* scroll-reveal — block level, can't hide inner content */
     @media (prefers-reduced-motion: no-preference) {
-      .js [data-reveal] {
-        opacity: 0; transform: translateY(22px);
-        transition: opacity .8s cubic-bezier(.16, 1, .3, 1), transform .8s cubic-bezier(.16, 1, .3, 1);
-      }
+      .js [data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
       .js [data-reveal].is-in { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="hero" data-reveal>
-      <span class="kicker">Ruby on Rails · 全端作品</span>
-      <h1>Merchant<span class="gold">OS</span></h1>
-      <p class="lead">多租戶電商 SaaS——商家註冊後開店、管理商品與訂單;散客可在公開店面瀏覽、搜尋、結帳。類似輕量版 Shopify。</p>
-      <div class="cta">
-        <a class="btn primary" href="https://merchant-os.onrender.com/s/demo-store" target="_blank">逛店面 Demo</a>
-        <a class="btn" href="https://merchant-os.onrender.com/" target="_blank">商家後台</a>
-        <a class="btn" href="https://github.com/srichsun/merchant_os" target="_blank">原始碼</a>
-      </div>
-      <p class="creds">後台測試帳號 — <b>owner@example.com</b> / <b>password123</b></p>
-      <div class="tldr">
-        <div class="pill"><div class="num">63</div><div class="desc">自動化測試全綠</div></div>
-        <div class="pill"><div class="num">2</div><div class="desc">金流可選 — Stripe / 綠界</div></div>
-        <div class="pill"><div class="num">0</div><div class="desc">超賣 — 悲觀鎖把關</div></div>
-      </div>
+  <div class="frame">
+
+    <header class="topbar">
+      <span class="wordmark">Merchant<b>OS</b></span>
+      <span class="mono">Ruby on Rails · 2026</span>
     </header>
 
-    <section data-reveal>
-      <span class="section-label">Features</span>
-      <h2>核心功能</h2>
-      <p class="intro">從開店、上架、搜尋到下單出貨,覆蓋電商後台 SaaS 的完整流程。</p>
-      <div class="cards">
-        <div class="card"><div class="ptag">Multi-tenancy</div><h3>多租戶隔離</h3><p>acts_as_tenant 行級隔離,每間店只看得到自己的資料;後台靠登入定租戶,店面靠網址 slug 定租戶。</p></div>
-        <div class="card"><div class="ptag">Concurrency</div><h3>防超賣</h3><p>結帳用悲觀鎖(SELECT … FOR UPDATE)扣庫存,並發搶購不會扣成負數,附 race condition 測試。</p></div>
-        <div class="card"><div class="ptag">State machine</div><h3>訂單狀態機</h3><p>AASM 管理 pending → paid → shipped,付款失敗整筆 rollback、不重複付款。</p></div>
-        <div class="card"><div class="ptag">Background jobs</div><h3>背景任務鏈</h3><p>付款成功後觸發:通知店家 → 寄買家確認信 → 出貨準備的 job 鏈。</p></div>
-        <div class="card"><div class="ptag">Search</div><h3>商品搜尋</h3><p>pg_search 以 Postgres trigram 搜尋,支援部分比對與中文,不另外架 Elasticsearch。</p></div>
-        <div class="card"><div class="ptag">Storefront</div><h3>公開店面 + 結帳</h3><p>免登入店面,瀏覽/搜尋/下單;結帳可選 Stripe 或綠界(ECPay)金流,付款後寄出確認信。</p></div>
-        <div class="card"><div class="ptag">Storage · Cache</div><h3>商品圖片 + 快取</h3><p>圖片用 Active Storage 存 Tigris(S3 相容物件儲存);店面商品卡用 Russian-doll 片段快取加速。</p></div>
-        <div class="card"><div class="ptag">Email</div><h3>交易信件</h3><p>付款成功後用 Resend HTTP API 寄買家確認信(主機擋 SMTP,改走 API,port 443 不會被擋)。</p></div>
-        <div class="card"><div class="ptag">API · Realtime</div><h3>REST API + 即時看板</h3><p>對外 JSON API(/api/v1,JWT + rack-attack 限流);後台訂單用 Turbo Streams + ActionCable 即時更新。</p></div>
+    <section class="hero" data-reveal>
+      <span class="eyebrow">全端作品 / Multi-tenant Commerce</span>
+      <h1 class="serif">多租戶電商,<br>從開店到<em>結帳</em>。</h1>
+      <p class="lead">商家註冊開店,管理商品、庫存與訂單;散客在公開店面瀏覽、搜尋、結帳。一套 Rails 後端撐起多家店——類似輕量版 Shopify。</p>
+      <div class="actions">
+        <a class="cta" href="https://merchant-os.onrender.com/s/demo-store" target="_blank">逛店面 Demo →</a>
+        <a class="cta ghost" href="https://merchant-os.onrender.com/" target="_blank">商家後台</a>
+        <a class="cta ghost" href="https://github.com/srichsun/merchant_os" target="_blank">原始碼</a>
       </div>
+      <p class="cred">後台測試帳號 — <b>owner@example.com</b> / <b>password123</b></p>
     </section>
 
-    <section data-reveal>
-      <span class="section-label">Checkout</span>
-      <h2>結帳金流流程</h2>
-      <p class="intro">買家可選 Stripe(信用卡)或綠界(ECPay)——兩者都是「導頁付款 + webhook 驗證」的 hosted 流程,共用同一套訂單狀態機,展示可插拔的金流設計。</p>
+    <section class="stats" data-reveal>
+      <div class="stat"><span class="fig serif">63</span><span class="cap">自動化測試全綠</span></div>
+      <div class="stat"><span class="fig serif">2</span><span class="cap">金流可選 — Stripe / 綠界</span></div>
+      <div class="stat"><span class="fig serif">0</span><span class="cap">超賣 — 悲觀鎖把關</span></div>
+    </section>
+
+    <section class="block" data-reveal>
+      <div class="block-head">
+        <span class="eyebrow">01 — 核心功能</span>
+        <h2 class="serif">從開店、上架、搜尋,到下單出貨</h2>
+        <p>覆蓋電商後台 SaaS 的完整流程,每個功能都附測試。</p>
+      </div>
+      <ol class="index">
+        <li class="row"><span class="idx">01</span><div><h3 class="serif">多租戶隔離</h3><p>acts_as_tenant 行級隔離,每間店只看得到自己的資料;後台靠登入定租戶,店面靠網址 slug 定租戶。</p></div></li>
+        <li class="row"><span class="idx">02</span><div><h3 class="serif">並發防超賣</h3><p>結帳用悲觀鎖(SELECT … FOR UPDATE)扣庫存,並發搶購不會扣成負數,附 race condition 測試。</p></div></li>
+        <li class="row"><span class="idx">03</span><div><h3 class="serif">訂單狀態機</h3><p>AASM 管理 pending → paid → shipped,付款失敗整筆 rollback、重複回呼不重複處理。</p></div></li>
+        <li class="row"><span class="idx">04</span><div><h3 class="serif">背景任務鏈</h3><p>付款成功後觸發:通知店家 → 寄買家確認信 → 出貨準備的 job 鏈。</p></div></li>
+        <li class="row"><span class="idx">05</span><div><h3 class="serif">商品搜尋</h3><p>pg_search 以 Postgres trigram 搜尋,支援部分比對與中文,不另外架 Elasticsearch。</p></div></li>
+        <li class="row"><span class="idx">06</span><div><h3 class="serif">公開店面 + 結帳</h3><p>免登入店面,瀏覽 / 搜尋 / 下單;結帳可選 Stripe 或綠界(ECPay),付款後寄出確認信。</p></div></li>
+        <li class="row"><span class="idx">07</span><div><h3 class="serif">商品圖片 + 快取</h3><p>圖片用 Active Storage 存 Tigris(S3 相容物件儲存);店面商品卡用 Russian-doll 片段快取加速。</p></div></li>
+        <li class="row"><span class="idx">08</span><div><h3 class="serif">交易信件</h3><p>付款成功後用 Resend HTTP API 寄買家確認信(主機擋 SMTP,改走 API,port 443 不被擋)。</p></div></li>
+        <li class="row"><span class="idx">09</span><div><h3 class="serif">REST API + 即時看板</h3><p>對外 JSON API(/api/v1,JWT + rack-attack 限流);後台訂單用 Turbo Streams + ActionCable 即時更新。</p></div></li>
+      </ol>
+    </section>
+
+    <section class="block" data-reveal>
+      <div class="block-head">
+        <span class="eyebrow">02 — 結帳金流</span>
+        <h2 class="serif">可插拔的金流設計</h2>
+        <p>買家可選 Stripe(信用卡)或綠界(ECPay)——兩者都是「導頁付款 + webhook 驗證」的 hosted 流程,共用同一套訂單狀態機。</p>
+      </div>
       <div class="flow">
         <div class="step"><div class="n">01</div><h3>建立訂單</h3><p>結帳時先建一筆 pending 訂單與交易編號,並選擇付款方式。</p></div>
         <div class="step"><div class="n">02</div><h3>導去金流</h3><p>導到 Stripe Checkout 或綠界付款頁,買家在金流端完成付款。</p></div>
-        <div class="step"><div class="n">03</div><h3>驗證 webhook</h3><p>金流 server 回呼,後端驗證簽章(Stripe 簽章 / 綠界 CheckMacValue),確認沒被竄改。</p></div>
+        <div class="step"><div class="n">03</div><h3>驗證 webhook</h3><p>金流 server 回呼,後端驗簽章(Stripe signature / 綠界 CheckMacValue),確認沒被竄改。</p></div>
         <div class="step"><div class="n">04</div><h3>標記付款</h3><p>驗證通過才轉為 paid 並觸發通知;重複回呼不重複處理。</p></div>
       </div>
     </section>
 
-    <section data-reveal>
-      <span class="section-label">Decisions</span>
-      <h2>技術決策</h2>
-      <p class="intro">依專案規模選技術,不過度設計。</p>
-      <div class="map">
-        <div class="row"><div class="pick"><span class="tag">Multi-tenancy</span><div class="name">acts_as_tenant 行級隔離</div></div><div class="why">不用 Apartment schema 隔離:商家一多,每張表都要逐 schema 跑 migration。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Search</span><div class="name">pg_search trigram</div></div><div class="why">不用 Elasticsearch:這規模不需要多養一個叢集、吃記憶體。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Orders</span><div class="name">AASM 狀態機</div></div><div class="why">狀態與轉移顯式、好讀好測,勝過土砲 enum + if。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Concurrency</span><div class="name">悲觀鎖防超賣</div></div><div class="why">高併發搶購最穩;樂觀鎖會大量 retry。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Frontend</span><div class="name">Hotwire + REST</div></div><div class="why">單一技術棧、開發快;不為用不到的互動多養一套 SPA。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Payments</span><div class="name">Stripe + 綠界,可插拔</div></div><div class="why">同一套訂單 / webhook 流程接兩家,買家結帳時選;展示可抽換的金流層。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Email</span><div class="name">Resend HTTP API</div></div><div class="why">主機把 outbound SMTP 擋了(連線逾時),改走 HTTP API(port 443)。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Images</span><div class="name">Active Storage + Tigris</div></div><div class="why">主機沒物件儲存、磁碟又會被清空 → 接外部 S3 相容儲存。</div></div>
-        <div class="row"><div class="pick"><span class="tag">Cache · Realtime</span><div class="name">Solid Cache + Solid Cable</div></div><div class="why">快取與 ActionCable 都存 Postgres,免費方案不用多養 Redis。</div></div>
+    <section class="block" data-reveal>
+      <div class="block-head">
+        <span class="eyebrow">03 — 技術決策</span>
+        <h2 class="serif">依專案規模選技術,不過度設計</h2>
+      </div>
+      <div class="ledger">
+        <div class="led-row"><div class="led-area">多租戶</div><div class="led-choice serif">acts_as_tenant 行級隔離</div><div class="led-why">不用 Apartment schema 隔離:商家一多,每張表都要逐 schema 跑 migration。</div></div>
+        <div class="led-row"><div class="led-area">搜尋</div><div class="led-choice serif">pg_search trigram</div><div class="led-why">不用 Elasticsearch:這規模不需要多養一個叢集、吃記憶體。</div></div>
+        <div class="led-row"><div class="led-area">訂單</div><div class="led-choice serif">AASM 狀態機</div><div class="led-why">狀態與轉移顯式、好讀好測,勝過土砲 enum + if。</div></div>
+        <div class="led-row"><div class="led-area">防超賣</div><div class="led-choice serif">悲觀鎖</div><div class="led-why">高併發搶購最穩;樂觀鎖會大量 retry。</div></div>
+        <div class="led-row"><div class="led-area">金流</div><div class="led-choice serif">Stripe + 綠界,可插拔</div><div class="led-why">同一套訂單 / webhook 流程接兩家,買家結帳時選。</div></div>
+        <div class="led-row"><div class="led-area">寄信</div><div class="led-choice serif">Resend HTTP API</div><div class="led-why">主機把 outbound SMTP 擋了(連線逾時),改走 HTTP API。</div></div>
+        <div class="led-row"><div class="led-area">圖片</div><div class="led-choice serif">Active Storage + Tigris</div><div class="led-why">主機沒物件儲存、磁碟又會被清空 → 接外部 S3 相容儲存。</div></div>
+        <div class="led-row"><div class="led-area">快取 / 即時</div><div class="led-choice serif">Solid Cache + Solid Cable</div><div class="led-why">快取與 ActionCable 都存 Postgres,免費方案不用 Redis。</div></div>
+        <div class="led-row"><div class="led-area">前端</div><div class="led-choice serif">Hotwire + REST</div><div class="led-why">單一技術棧、開發快;不為用不到的互動多養一套 SPA。</div></div>
       </div>
     </section>
 
-    <section data-reveal>
-      <span class="section-label">Stack</span>
-      <h2>技術棧</h2>
-      <div class="chips">
-        <span class="chip">Rails 8</span><span class="chip">PostgreSQL</span><span class="chip">Hotwire</span>
-        <span class="chip">Devise</span><span class="chip">Pundit</span><span class="chip">acts_as_tenant</span>
-        <span class="chip">AASM</span><span class="chip">pg_search</span><span class="chip">Stripe</span><span class="chip">ECPay</span>
-        <span class="chip">Resend</span><span class="chip">Active Storage</span><span class="chip">Tigris</span><span class="chip">JWT</span>
-        <span class="chip">Action Cable</span><span class="chip">Solid Cache</span><span class="chip">Sidekiq</span><span class="chip">Sentry</span>
-        <span class="chip">RSpec</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Render</span>
+    <section class="block" data-reveal>
+      <div class="block-head">
+        <span class="eyebrow">04 — 技術棧</span>
       </div>
+      <p class="stack">Rails 8<span>·</span>PostgreSQL<span>·</span>Hotwire<span>·</span>Devise<span>·</span>Pundit<span>·</span>acts_as_tenant<span>·</span>AASM<span>·</span>pg_search<span>·</span>Stripe<span>·</span>ECPay<span>·</span>Resend<span>·</span>Active Storage<span>·</span>Tigris<span>·</span>JWT<span>·</span>Action Cable<span>·</span>Solid Cache<span>·</span>Sidekiq<span>·</span>Sentry<span>·</span>RSpec<span>·</span>Docker<span>·</span>GitHub Actions<span>·</span>Render</p>
     </section>
 
-    <section data-reveal>
-      <span class="section-label">Engineering</span>
-      <h2>工程實踐</h2>
+    <section class="block" data-reveal>
+      <div class="block-head">
+        <span class="eyebrow">05 — 工程實踐</span>
+      </div>
       <div class="pillars">
-        <div class="pillar"><div class="rn">I</div><h3>測試</h3><p>RSpec + FactoryBot,每個功能都附測試,含並發防超賣的 race condition spec。</p></div>
-        <div class="pillar"><div class="rn">II</div><h3>CI</h3><p>GitHub Actions:RuboCop、RSpec、brakeman 安全掃描、gitleaks、Docker build。</p></div>
-        <div class="pillar"><div class="rn">III</div><h3>觀測</h3><p>Sentry 錯誤追蹤、Lograge 單行 JSON log,每行帶 tenant_id / user_id。</p></div>
+        <div><div class="rn serif">I</div><h3 class="serif">測試</h3><p>RSpec + FactoryBot,每個功能都附測試,含並發防超賣的 race condition spec。</p></div>
+        <div><div class="rn serif">II</div><h3 class="serif">CI</h3><p>GitHub Actions:RuboCop、RSpec、Brakeman、bundler-audit、gitleaks、Docker build。</p></div>
+        <div><div class="rn serif">III</div><h3 class="serif">觀測</h3><p>Sentry 錯誤追蹤、Lograge 單行 JSON log,每行帶 request_id / tenant_id / user_id。</p></div>
       </div>
     </section>
 
-    <footer>
-      MerchantOS —
-      <a href="https://github.com/srichsun/merchant_os" target="_blank">GitHub</a> ·
-      <a href="https://merchant-os.onrender.com/s/demo-store" target="_blank">Live Demo</a>
+    <footer class="foot">
+      <span class="mark serif">MerchantOS</span>
+      <span>
+        <a href="https://github.com/srichsun/merchant_os" target="_blank">GitHub</a> &nbsp;·&nbsp;
+        <a href="https://merchant-os.onrender.com/s/demo-store" target="_blank">Live Demo</a>
+      </span>
     </footer>
+
   </div>
 
   <script>
-    // Fade each block in as it scrolls into view (progressive enhancement).
     (function () {
       var items = Array.prototype.slice.call(document.querySelectorAll("[data-reveal]"));
       var show = function (el) { el.classList.add("is-in"); };
-      if (!("IntersectionObserver" in window) ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        items.forEach(show);
-        return;
+      if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        items.forEach(show); return;
       }
-      items.forEach(function (el, i) { el.style.transitionDelay = Math.min(i, 5) * 70 + "ms"; });
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
-        });
-      }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+        entries.forEach(function (e) { if (e.isIntersecting) { show(e.target); io.unobserve(e.target); } });
+      }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
       items.forEach(function (el) { io.observe(el); });
     })();
   </script>
