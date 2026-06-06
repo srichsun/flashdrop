@@ -14,6 +14,13 @@ check out. Think of it as a lightweight Shopify.
 
 > Hosted on Render's free tier — the first request may take ~30s to wake up.
 
+**Test checkout** — both gateways run in test mode:
+
+| Gateway | Test card | Notes |
+|---------|-----------|-------|
+| Stripe | `4242 4242 4242 4242` | any future expiry · any CVC |
+| ECPay (綠界) | `4311 9522 2222 2222` | CVC `222` · future expiry · 3D OTP arrives by real SMS — enter the code you receive |
+
 ## Features
 
 - **Multi-tenant** stores, isolated at the row level (`acts_as_tenant`).
