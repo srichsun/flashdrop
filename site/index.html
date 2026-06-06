@@ -202,8 +202,8 @@
       </div>
       <p class="creds">後台測試帳號 — <b>owner@example.com</b> / <b>password123</b></p>
       <div class="tldr">
-        <div class="pill"><div class="num">8</div><div class="desc">核心功能模組</div></div>
-        <div class="pill"><div class="num">43</div><div class="desc">自動化測試全綠</div></div>
+        <div class="pill"><div class="num">63</div><div class="desc">自動化測試全綠</div></div>
+        <div class="pill"><div class="num">2</div><div class="desc">金流可選 — Stripe / 綠界</div></div>
         <div class="pill"><div class="num">0</div><div class="desc">超賣 — 悲觀鎖把關</div></div>
       </div>
     </header>
@@ -219,6 +219,9 @@
         <div class="card"><div class="ptag">Background jobs</div><h3>背景任務鏈</h3><p>付款成功後觸發:通知店家 → 寄買家確認信 → 出貨準備的 job 鏈。</p></div>
         <div class="card"><div class="ptag">Search</div><h3>商品搜尋</h3><p>pg_search 以 Postgres trigram 搜尋,支援部分比對與中文,不另外架 Elasticsearch。</p></div>
         <div class="card"><div class="ptag">Storefront</div><h3>公開店面 + 結帳</h3><p>免登入店面,瀏覽/搜尋/下單;結帳可選 Stripe 或綠界(ECPay)金流,付款後寄出確認信。</p></div>
+        <div class="card"><div class="ptag">Storage · Cache</div><h3>商品圖片 + 快取</h3><p>圖片用 Active Storage 存 Tigris(S3 相容物件儲存);店面商品卡用 Russian-doll 片段快取加速。</p></div>
+        <div class="card"><div class="ptag">Email</div><h3>交易信件</h3><p>付款成功後用 Resend HTTP API 寄買家確認信(主機擋 SMTP,改走 API,port 443 不會被擋)。</p></div>
+        <div class="card"><div class="ptag">API · Realtime</div><h3>REST API + 即時看板</h3><p>對外 JSON API(/api/v1,JWT + rack-attack 限流);後台訂單用 Turbo Streams + ActionCable 即時更新。</p></div>
       </div>
     </section>
 
@@ -244,6 +247,10 @@
         <div class="row"><div class="pick"><span class="tag">Orders</span><div class="name">AASM 狀態機</div></div><div class="why">狀態與轉移顯式、好讀好測,勝過土砲 enum + if。</div></div>
         <div class="row"><div class="pick"><span class="tag">Concurrency</span><div class="name">悲觀鎖防超賣</div></div><div class="why">高併發搶購最穩;樂觀鎖會大量 retry。</div></div>
         <div class="row"><div class="pick"><span class="tag">Frontend</span><div class="name">Hotwire + REST</div></div><div class="why">單一技術棧、開發快;不為用不到的互動多養一套 SPA。</div></div>
+        <div class="row"><div class="pick"><span class="tag">Payments</span><div class="name">Stripe + 綠界,可插拔</div></div><div class="why">同一套訂單 / webhook 流程接兩家,買家結帳時選;展示可抽換的金流層。</div></div>
+        <div class="row"><div class="pick"><span class="tag">Email</span><div class="name">Resend HTTP API</div></div><div class="why">主機把 outbound SMTP 擋了(連線逾時),改走 HTTP API(port 443)。</div></div>
+        <div class="row"><div class="pick"><span class="tag">Images</span><div class="name">Active Storage + Tigris</div></div><div class="why">主機沒物件儲存、磁碟又會被清空 → 接外部 S3 相容儲存。</div></div>
+        <div class="row"><div class="pick"><span class="tag">Cache · Realtime</span><div class="name">Solid Cache + Solid Cable</div></div><div class="why">快取與 ActionCable 都存 Postgres,免費方案不用多養 Redis。</div></div>
       </div>
     </section>
 
@@ -253,9 +260,10 @@
       <div class="chips">
         <span class="chip">Rails 8</span><span class="chip">PostgreSQL</span><span class="chip">Hotwire</span>
         <span class="chip">Devise</span><span class="chip">Pundit</span><span class="chip">acts_as_tenant</span>
-        <span class="chip">AASM</span><span class="chip">pg_search</span><span class="chip">Stripe</span><span class="chip">Sidekiq</span>
-        <span class="chip">Sentry</span><span class="chip">RSpec</span><span class="chip">Docker</span>
-        <span class="chip">GitHub Actions</span><span class="chip">Render</span>
+        <span class="chip">AASM</span><span class="chip">pg_search</span><span class="chip">Stripe</span><span class="chip">ECPay</span>
+        <span class="chip">Resend</span><span class="chip">Active Storage</span><span class="chip">Tigris</span><span class="chip">JWT</span>
+        <span class="chip">Action Cable</span><span class="chip">Solid Cache</span><span class="chip">Sidekiq</span><span class="chip">Sentry</span>
+        <span class="chip">RSpec</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span><span class="chip">Render</span>
       </div>
     </section>
 
