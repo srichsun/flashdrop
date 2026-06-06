@@ -1,4 +1,0 @@
-# This repo is a Rails app; the only thing Netlify serves is the static
-# showcase page in site/. No build step — just publish that folder.
-[build]
-  publish = "site"
