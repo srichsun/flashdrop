@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "login", to: "sessions#create"
+      post "refresh", to: "sessions#refresh"
+      delete "logout", to: "sessions#destroy"
+      delete "logout_all", to: "sessions#destroy_all"
       resources :products, only: %i[index show]
     end
   end
