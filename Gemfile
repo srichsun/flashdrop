@@ -108,7 +108,7 @@ group :test do
 end
 
 # Pagination
-gem "pagy", "~> 9.0"
+gem "pagy", "~> 43.5"
 
 # REST API auth + rate limiting
 gem "jwt"
