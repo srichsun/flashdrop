@@ -57,10 +57,16 @@ gem "redis"           # Backing store for Sidekiq
 gem "sentry-ruby"     # Error tracking
 gem "sentry-rails"    # Sentry's Rails integration
 gem "lograge"         # Condense request logs into single-line JSON
+gem "scout_apm"          # APM: slow requests, N+1, DB time (reports when SCOUT_KEY set)
+gem "scout_apm_logging"  # Forward Rails logs to Scout (searchable, retained, correlated with APM)
+gem "pghero"             # Postgres dashboard: slow queries, missing indexes, space
 
 group :development, :test do
   # Catch N+1 queries (logs in development, raises in test)
   gem "bullet"
+
+  # In-page profiler: per-request time + every SQL query, shown in a corner badge
+  gem "rack-mini-profiler"
 
   # Testing
   gem "rspec-rails"

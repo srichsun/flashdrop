@@ -1,0 +1,28 @@
+# Scout APM configuration.
+# Keys are read from env vars (env vars override this file), so no secret is
+# committed — important because this repo is public. Set them in .env (local)
+# and in Render (production):
+#   SCOUT_KEY            – org key (Settings screen)
+#   SCOUT_MONITOR        – "true" to report
+#   SCOUT_LOGS_ENABLED   – "true" to forward logs to Scout
+#   SCOUT_LOG_INGEST_KEY – app-specific key from Scout's Logs tab (after deploy)
+common: &defaults
+  name: MerchantOS
+  key: <%= ENV["SCOUT_KEY"] %>
+  monitor: <%= ENV.fetch("SCOUT_MONITOR", "false") %>
+  errors_enabled: true
+  logs_monitor: <%= ENV.fetch("SCOUT_LOGS_MONITOR", "false") %>
+  logs_ingest_key: <%= ENV["SCOUT_LOG_INGEST_KEY"] %>
+
+production:
+  <<: *defaults
+  monitor: <%= ENV.fetch("SCOUT_MONITOR", "true") %>
+  logs_monitor: <%= ENV.fetch("SCOUT_LOGS_MONITOR", "true") %>
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+  monitor: false
+  logs_monitor: false

@@ -33,6 +33,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # PgHero database dashboard. It exposes whole-database stats across all tenants,
+  # so it's gated to a single admin email (set ADMIN_EMAIL); a logged-in tenant user
+  # is not enough. Off entirely while ADMIN_EMAIL is unset.
+  authenticate :user, ->(u) { ENV["ADMIN_EMAIL"].present? && u.email == ENV["ADMIN_EMAIL"] } do
+    mount PgHero::Engine, at: "pghero"
+  end
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
