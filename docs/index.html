@@ -255,7 +255,8 @@
       }
       var saved = null;
       try { saved = localStorage.getItem(KEY); } catch (e) {}
-      apply(saved || "en");
+      var param = new URLSearchParams(location.search).get("lang");
+      apply(param || saved || "en");
       document.querySelectorAll(".langtoggle button").forEach(function (b) {
         b.addEventListener("click", function () { apply(b.getAttribute("data-lang")); });
       });
