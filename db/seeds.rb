@@ -59,15 +59,18 @@ def seed_store(name:, owner_email:, staff_email: nil, products:, instagram_handl
     end
   end
 
-  products.each do |attrs|
-    product = store.products.find_or_create_by!(name: attrs[:name]) do |p|
-      p.price_cents = attrs[:price_cents]
-      p.stock = attrs[:stock]
-      p.original_price_cents = attrs[:original_price_cents]
-      p.sale_starts_at = attrs[:sale_starts_at]
-      p.sale_ends_at = attrs[:sale_ends_at]
+  # Scope creation to this store so acts_as_tenant sets tenant_id unambiguously.
+  ActsAsTenant.with_tenant(store) do
+    products.each do |attrs|
+      product = Product.find_or_create_by!(name: attrs[:name]) do |p|
+        p.price_cents = attrs[:price_cents]
+        p.stock = attrs[:stock]
+        p.original_price_cents = attrs[:original_price_cents]
+        p.sale_starts_at = attrs[:sale_starts_at]
+        p.sale_ends_at = attrs[:sale_ends_at]
+      end
+      attach_demo_image(product, attrs[:image])
     end
-    attach_demo_image(product, attrs[:image])
   end
 
   store
@@ -106,19 +109,20 @@ seed_store(
 
 # A spread of orders for the Demo Store so the dashboard and the paginated
 # orders page have something to show.
-if demo.orders.none?
-  products = demo.products.to_a
-  emails = %w[alice bob carol dave erin frank grace heidi ivan judy].map { |n| "#{n}@example.com" }
+ActsAsTenant.with_tenant(demo) do
+  if demo.orders.none?
+    products = demo.products.to_a
+    emails = %w[alice bob carol dave erin frank grace heidi ivan judy].map { |n| "#{n}@example.com" }
 
-  12.times do
-    Order.create!(
-      tenant: demo,
-      product: products.sample,
-      quantity: rand(1..3),
-      customer_email: emails.sample,
-      aasm_state: %w[paid paid paid shipped shipped pending].sample,
-      created_at: rand(0..21).days.ago
-    )
+    12.times do
+      Order.create!(
+        product: products.sample,
+        quantity: rand(1..3),
+        customer_email: emails.sample,
+        aasm_state: %w[paid paid paid shipped shipped pending].sample,
+        created_at: rand(0..21).days.ago
+      )
+    end
   end
 end
 
