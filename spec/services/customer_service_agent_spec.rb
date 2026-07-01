@@ -59,6 +59,18 @@ RSpec.describe CustomerServiceAgent do
     end
   end
 
+  describe "#respond loop cap" do
+    it "bails after MAX_TURNS if the model never stops calling tools" do
+      tool_block = double(type: :tool_use, id: "t", name: "get_return_policy", input: {})
+      looping = double(content: [ tool_block ], stop_reason: :tool_use)
+      messages_api = instance_double(Anthropic::Resources::Messages, create: looping)
+      agent = described_class.new(client: double(messages: messages_api))
+
+      expect(agent.respond("hi")).to include("複雜")
+      expect(messages_api).to have_received(:create).exactly(described_class::MAX_TURNS).times
+    end
+  end
+
   describe "echoing the assistant turn back" do
     # The SDK's tool_use block carries an extra caller_ field the API rejects if
     # sent back verbatim; we must rebuild the turn with only accepted fields.

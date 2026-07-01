@@ -7,6 +7,10 @@
 class CustomerServiceAgent
   MODEL = "claude-opus-4-8"
 
+  # Safety cap on the tool-use loop so a misbehaving model can't spin forever.
+  # A normal answer needs at most a few tool rounds.
+  MAX_TURNS = 6
+
   # Human-readable order states for the customer-facing reply.
   ORDER_STATUS = {
     "pending" => "待付款",
@@ -60,7 +64,7 @@ class CustomerServiceAgent
   def respond(question)
     messages = [ { role: "user", content: question } ]
 
-    loop do
+    MAX_TURNS.times do
       response = @client.messages.create(
         model: MODEL,
         max_tokens: 1024,
@@ -83,6 +87,9 @@ class CustomerServiceAgent
       end
       messages << { role: "user", content: results }
     end
+
+    # The model kept asking for tools past the cap — bail with a safe message.
+    "抱歉，這個問題有點複雜，請稍後再試或聯繫真人客服。"
   end
 
   # --- Tools (tenant-scoped by acts_as_tenant) ---
