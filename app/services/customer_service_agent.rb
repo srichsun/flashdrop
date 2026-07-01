@@ -68,7 +68,7 @@ class CustomerServiceAgent
         tools: TOOLS,
         messages: messages
       )
-      messages << { role: "assistant", content: response.content.map(&:to_h) }
+      messages << { role: "assistant", content: assistant_content(response) }
 
       # No more tool calls -> this is the final answer.
       return final_text(response) unless response.stop_reason == :tool_use
@@ -121,6 +121,18 @@ class CustomerServiceAgent
     when "get_inventory"     then get_inventory(params["product_name"])
     when "get_return_policy" then get_return_policy
     else "未知的工具：#{name}"
+    end
+  end
+
+  # Rebuild the assistant turn keeping only the fields the API accepts back.
+  # (The SDK's response blocks carry extra fields like tool_use.caller_ that the
+  # API rejects if echoed verbatim.)
+  def assistant_content(response)
+    response.content.filter_map do |block|
+      case block.type
+      when :text     then { type: "text", text: block.text }
+      when :tool_use then { type: "tool_use", id: block.id, name: block.name, input: block.input }
+      end
     end
   end
 

@@ -58,4 +58,19 @@ RSpec.describe CustomerServiceAgent do
       expect(agent.get_return_policy).to include("7 天內")
     end
   end
+
+  describe "echoing the assistant turn back" do
+    # The SDK's tool_use block carries an extra caller_ field the API rejects if
+    # sent back verbatim; we must rebuild the turn with only accepted fields.
+    it "keeps only API-accepted fields on each block" do
+      text = double(type: :text, text: "hi")
+      tool = double(type: :tool_use, id: "t1", name: "get_order", input: { "order_id" => "1" })
+      response = double(content: [ text, tool ])
+
+      expect(agent.send(:assistant_content, response)).to eq([
+        { type: "text", text: "hi" },
+        { type: "tool_use", id: "t1", name: "get_order", input: { "order_id" => "1" } }
+      ])
+    end
+  end
 end
