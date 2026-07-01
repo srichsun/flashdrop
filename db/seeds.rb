@@ -2,7 +2,7 @@
 # Two separate stores so the multi-tenant isolation is visible after login.
 #
 # Logins (password "password123"):
-#   owner@example.com  / staff@example.com   -> Demo Store
+#   owner@example.com  / staff@example.com   -> Studio Aria
 #   owner2@example.com                        -> Coffee Lab
 
 # Attach the product's demo photo (db/seeds/images/<filename>). Wrapped in a
@@ -60,6 +60,9 @@ def seed_store(name:, owner_email:, staff_email: nil, products:)
     product = store.products.find_or_create_by!(name: attrs[:name]) do |p|
       p.price_cents = attrs[:price_cents]
       p.stock = attrs[:stock]
+      p.original_price_cents = attrs[:original_price_cents]
+      p.sale_starts_at = attrs[:sale_starts_at]
+      p.sale_ends_at = attrs[:sale_ends_at]
     end
     attach_demo_image(product, attrs[:image])
   end
@@ -67,19 +70,20 @@ def seed_store(name:, owner_email:, staff_email: nil, products:)
   store
 end
 
+# One influencer's flash-sale shop: a handful of limited drops with a markdown
+# off the original price and a live sale window. No local images — the storefront
+# falls back to free Unsplash product photos.
 demo = seed_store(
-  name: "Demo Store",
+  name: "Studio Aria",
   owner_email: "owner@example.com",
   staff_email: "staff@example.com",
   products: [
-    { name: "Cold Brew Coffee",   price_cents: 12_000, stock: 50, image: "cold-brew-coffee.jpg" },
-    { name: "Ceramic Mug",        price_cents: 38_000, stock: 20, image: "ceramic-mug.jpg" },
-    { name: "Pour-over Dripper",  price_cents: 45_000, stock: 15, image: "pour-over-dripper.jpg" },
-    { name: "Paper Filters ×100", price_cents: 18_000, stock: 80, image: "paper-filters.jpg" },
-    { name: "Stainless Tumbler",  price_cents: 52_000, stock: 12, image: "stainless-tumbler.jpg" },
-    { name: "Coffee Beans 250g",  price_cents: 36_000, stock: 40, image: "coffee-beans.jpg" },
-    { name: "Gift Box Set",       price_cents: 88_000, stock: 8, image: "gift-box-set.jpg" },
-    { name: "Tote Bag",           price_cents: 25_000, stock: 0, image: "tote-bag.jpg" } # sold out
+    { name: "Oversized Hoodie",  price_cents: 5_900, original_price_cents: 9_900,  stock: 8,
+      sale_starts_at: 1.hour.ago, sale_ends_at: 2.days.from_now },
+    { name: "Canvas Tote Bag",   price_cents: 2_900, original_price_cents: 4_500,  stock: 15,
+      sale_starts_at: 1.hour.ago, sale_ends_at: 1.day.from_now },
+    { name: "Everyday Sneakers", price_cents: 8_900, original_price_cents: 14_900, stock: 5,
+      sale_starts_at: 1.hour.ago, sale_ends_at: 3.days.from_now }
   ]
 )
 
@@ -99,7 +103,7 @@ if demo.orders.none?
   products = demo.products.to_a
   emails = %w[alice bob carol dave erin frank grace heidi ivan judy].map { |n| "#{n}@example.com" }
 
-  28.times do
+  12.times do
     Order.create!(
       tenant: demo,
       product: products.sample,

@@ -20,7 +20,7 @@
             <% if product.image.attached? %>
               <%= image_tag product.image.variant(:card), class: "h-full w-full object-cover", loading: "lazy", alt: product.name %>
             <% else %>
-              <%= image_tag "https://picsum.photos/seed/product#{product.id}/600/400", class: "h-full w-full object-cover", loading: "lazy", alt: product.name %>
+              <%= image_tag demo_product_image(product, width: 600, height: 400), class: "h-full w-full object-cover", loading: "lazy", alt: product.name %>
             <% end %>
             <% if product.discount_percent %>
               <span class="absolute left-2 top-2 rounded bg-[#2a1414] px-2 py-1 text-xs font-medium text-red-300"><%= product.discount_percent %>% off</span>
