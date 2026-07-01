@@ -18,6 +18,24 @@ RSpec.describe CustomerServiceReplyJob do
     )
   end
 
+  it "broadcasts a friendly message when the agent fails, without raising" do
+    failing = instance_double(CustomerServiceAgent)
+    allow(failing).to receive(:respond).and_raise(StandardError, "boom")
+    allow(CustomerServiceAgent).to receive(:new).and_return(failing)
+
+    expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+      "storefront_chat", "conv-1",
+      hash_including(locals: hash_including(text: a_string_including("暫時無法")))
+    )
+
+    expect do
+      described_class.perform_now(
+        tenant_id: store.id, conversation_id: "conv-1",
+        message: "hi", reply_dom_id: "reply_abc"
+      )
+    end.not_to raise_error
+  end
+
   it "sets the current tenant while the agent runs" do
     agent = instance_double(CustomerServiceAgent)
     allow(CustomerServiceAgent).to receive(:new).and_return(agent)
